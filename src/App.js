@@ -255,7 +255,7 @@ export default function App() {
 
   // ✅ 地址（會被選名字自動帶入）
   const [address, setAddress] = useState("");
-  const [addressTouched, setAddressTouched] = useState(false);
+  const [, setAddressTouched] = useState(false);
 
   // ✅ 金額
   const [amount, setAmount] = useState("500");
