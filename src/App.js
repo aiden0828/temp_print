@@ -10,7 +10,7 @@ function formatNames(names) {
 
 function ReceiptCopy({
   copyLabel,
-  serial,
+  copyKey,
   names,
   address,
   amount,
@@ -20,7 +20,6 @@ function ReceiptCopy({
   purposes,
   otherEnabled,
   otherText,
-  setSerial,
   setNameAt,
   addNameRow,
   removeNameRow,
@@ -32,24 +31,16 @@ function ReceiptCopy({
   setAddressTouched,
 }) {
   const printedNames = formatNames(names);
-
+  const nameListId = `nameList-${copyKey}`;
+  
   return (
     <div className="copy">
       {/* 抬頭列 */}
       <div className="topbar">
-        <div className="topbar-title red">量無德功字扇施佈</div>
+        <div className="topbar-title red">量無德功宇廟施佈</div>
 
         <div className="topbar-right">
           <div className="copy-label red">{copyLabel}</div>
-
-          <div className="serial">
-            <input
-              className="screen-only input input-serial"
-              value={serial}
-              onChange={(e) => setSerial(e.target.value)}
-            />
-            <span className="print-only red">{serial}</span>
-          </div>
         </div>
       </div>
 
@@ -59,7 +50,17 @@ function ReceiptCopy({
         <div className="frame">
           {/* 框內右側直排大字 */}
           <div className="v-right red">
-            <div className="v-big">感謝狀</div>
+            <div className="v-big">
+              感謝狀<br/>
+              信願寺
+            </div>
+          </div>
+
+          <div className="v-left red">
+              <div className="v-left">
+                台南市永康區民族路1巷70弄26號<br/>
+                電話 : (06)2052276
+            </div>
           </div>
 
           {/* 左側欄位 */}
@@ -74,7 +75,8 @@ function ReceiptCopy({
                   <div key={idx} className="name-row">
                     <input
                       className="input"
-                      list="nameList"
+                      type="text"
+                      list={nameListId}
                       value={val}
                       onChange={(e) => setNameAt(idx, e.target.value)}
                       placeholder={`姓名 ${idx + 1}`}
@@ -91,7 +93,7 @@ function ReceiptCopy({
                   </div>
                 ))}
 
-                <datalist id="nameList">
+                <datalist id={nameListId}>
                   {customers.map((c) => (
                     <option key={c.id} value={c.name} />
                   ))}
@@ -104,7 +106,7 @@ function ReceiptCopy({
 
               {/* 列印：把所有姓名串起來 */}
               <div className="print-only v-fill blue">
-                {printedNames || "＿＿＿＿"}
+                {printedNames}
               </div>
             </div>
 
@@ -123,7 +125,7 @@ function ReceiptCopy({
               />
 
               <div className="print-only v-fill blue">
-                {address || "＿＿＿＿"}
+                {address}
               </div>
             </div>
 
@@ -176,7 +178,7 @@ function ReceiptCopy({
                   <span className="box">{otherEnabled ? "✓" : ""}</span>
                   <span>其他：</span>
                   <span className="other-line">
-                    {otherEnabled ? (otherText || "＿＿＿＿") : "＿＿＿＿"}
+                    {otherEnabled && otherText}
                   </span>
                 </div>
               </div>
@@ -207,6 +209,14 @@ function ReceiptCopy({
                   {today.y} 年 {today.m} 月 {today.day} 日
                 </span>
               </div>
+            </div>
+          </div>
+
+          <div className="receiver-stamp">
+            <div className="receiver-title red">經收人</div>
+
+            <div className="receiver-box">
+              <img className="receiver-img" src="/stamp.png" alt="經收人印章" />
             </div>
           </div>
         </div>
@@ -248,8 +258,6 @@ export default function App() {
     fetchCustomers();
   }, []);
 
-  const [serial, setSerial] = useState("01453");
-
   // ✅ 多人姓名（至少 1 個欄位）
   const [names, setNames] = useState([""]);
 
@@ -258,17 +266,18 @@ export default function App() {
   const [, setAddressTouched] = useState(false);
 
   // ✅ 金額
-  const [amount, setAmount] = useState("500");
+  const [amount, setAmount] = useState("");
 
   // ✅ 框外文字
   const [reasonText] = useState("添油添香添福壽");
 
   // ✅ 用途（可自行增減）
   const [purposes, setPurposes] = useState([
-    { key: "light", label: "點燈", checked: false },
-    { key: "incense", label: "添香油", checked: false },
-    { key: "repair", label: "修繕", checked: false },
-    { key: "charity", label: "慈善", checked: false },
+    { key: "bright_light", label: "光明燈", checked: false },
+    { key: "tai_Sui_light", label: "太歲燈", checked: false },
+    { key: "rejoicing", label: "隨喜", checked: false },
+    { key: "flowers_fruits", label: "花果", checked: false },
+    { key: "break_fast", label: "打齋", checked: false },
   ]);
 
   const togglePurpose = (key) => {
@@ -332,7 +341,7 @@ export default function App() {
       {/* 上聯：交付聯 */}
       <ReceiptCopy
         copyLabel="交付聯"
-        serial={serial}
+        copyKey="give"
         names={names}
         address={address}
         amount={amount}
@@ -342,7 +351,6 @@ export default function App() {
         purposes={purposes}
         otherEnabled={otherEnabled}
         otherText={otherText}
-        setSerial={setSerial}
         setNameAt={setNameAt}
         addNameRow={addNameRow}
         removeNameRow={removeNameRow}
@@ -362,7 +370,7 @@ export default function App() {
       {/* 下聯：存根聯 */}
       <ReceiptCopy
         copyLabel="存根聯"
-        serial={serial}
+        copyKey="stub"
         names={names}
         address={address}
         amount={amount}
@@ -372,7 +380,6 @@ export default function App() {
         purposes={purposes}
         otherEnabled={otherEnabled}
         otherText={otherText}
-        setSerial={setSerial}
         setNameAt={setNameAt}
         addNameRow={addNameRow}
         removeNameRow={removeNameRow}
