@@ -72,9 +72,18 @@ body {
 }
 
 /* 框內右側直排大字 */
-.v-right { position: absolute; right: 4mm; top: 6mm; }
+.v-right { position: absolute; right: 4mm; top: 26mm; }
 
-.v-big {
+.v-big1 {
+  writing-mode: vertical-rl;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 50px;
+}
+
+.v-mid { position: absolute; right: 14mm; top: 6mm; }
+
+.v-big2 {
   writing-mode: vertical-rl;
   font-size: 30px;
   font-weight: 900;

@@ -50,12 +50,15 @@ function ReceiptCopy({
         <div className="frame">
           {/* 框內右側直排大字 */}
           <div className="v-right red">
-            <div className="v-big">
-              感謝狀<br/>
+            <div className="v-big1">
+              感謝狀
+            </div>
+          </div>
+          <div className="v-mid red">
+            <div className="v-big2">
               信願寺
             </div>
           </div>
-
           <div className="v-left red">
               <div className="v-left">
                 台南市永康區民族路1巷70弄26號<br/>
